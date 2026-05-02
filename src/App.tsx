@@ -1270,7 +1270,7 @@ Aguardo retorno!`;
             </div>
             <div className="rounded-2xl overflow-hidden shadow-sm border border-[var(--staticolor-gray-200)] w-full min-h-[300px] flex-1 flex flex-col">
               <iframe
-                src="https://maps.google.com/maps?q=Av.%20Andr%C3%A9%20Rebou%C3%A7as%2C%20265%20-%20Nossa%20Sra.%20das%20Gra%C3%A7as%2C%20Uberl%C3%A2ndia%20-%20MG%2C%2038402-002&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3775.3111107293967!2d-48.27775200000001!3d-18.8732745!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94a4470050d8ba97%3A0xb781231564dbfd60!2sStaticolor%20-%20Pintura%20Eletroest%C3%A1tica!5e0!3m2!1spt-BR!2sbr!4v1777764862350!5m2!1spt-BR!2sbr"
                 width="100%"
                 height="100%"
                 className="flex-1"
