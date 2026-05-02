@@ -256,12 +256,15 @@ function Hero() {
           start: 'top top',
           end: '+=150%', // Define a duração do scroll
           pin: true,
-          scrub: 0.5, // Mais tempo de scrub para suavizar em touch
+          pinType: 'fixed',
+          anticipatePin: 1,
+          scrub: true, // scrub: true amarra perfeitamente ao dedo do usuário sem delay
           onUpdate: (self) => {
             if (video.duration) {
               if (frameId) cancelAnimationFrame(frameId);
               frameId = requestAnimationFrame(() => {
-                video.currentTime = self.progress * video.duration;
+                // O pequeno acréscimo de +0.001 ajuda a forçar o iOS Safari a renderizar o frame
+                video.currentTime = self.progress * video.duration + 0.001;
               });
             }
           },
@@ -272,6 +275,14 @@ function Hero() {
         setupScrollTrigger();
       } else {
         video.addEventListener('loadedmetadata', setupScrollTrigger);
+      }
+
+      // Hack essencial para iOS Safari: Iniciar a reprodução e pausar para destravar a engine de vídeo
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          video.pause();
+        }).catch(() => {});
       }
     }, containerRef);
 
@@ -377,6 +388,7 @@ function Hero() {
                 src="/anima_optimized.mp4"
                 muted
                 playsInline
+                preload="auto"
                 disablePictureInPicture
                 className="w-full h-auto object-contain mix-blend-multiply"
               />
