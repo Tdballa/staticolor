@@ -38,6 +38,7 @@ import img4 from '@/assets/gallery-4.png';
 // ─────────────────────────────────────────────
 
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const navLinks = [
   { name: 'Sobre', id: 'sobre' },
@@ -248,18 +249,20 @@ function Hero() {
       const video = videoRef.current;
       if (!video) return;
 
+      let frameId: number;
       const setupScrollTrigger = () => {
         ScrollTrigger.create({
           trigger: containerRef.current,
           start: 'top top',
           end: '+=150%', // Define a duração do scroll
           pin: true,
-          scrub: 0.1,
+          scrub: 0.5, // Mais tempo de scrub para suavizar em touch
           onUpdate: (self) => {
             if (video.duration) {
-              // Usar requestAnimationFrame para melhor performance pode ser uma alternativa,
-              // mas a atribuição direta geralmente é suficiente para vídeos com GOP=1
-              video.currentTime = self.progress * video.duration;
+              if (frameId) cancelAnimationFrame(frameId);
+              frameId = requestAnimationFrame(() => {
+                video.currentTime = self.progress * video.duration;
+              });
             }
           },
         });
