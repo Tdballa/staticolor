@@ -242,77 +242,67 @@ function Header() {
 
 function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Pré-carrega o vídeo inteiro na memória RAM (Blob) para evitar engasgos
-  // de rede (network requests) a cada frame do scroll quando em produção (Vercel).
+  const frameCount = 121;
+  const currentFrame = (index: number) => `/frames/frame_${(index + 1).toString().padStart(4, '0')}.jpg`;
+
   useEffect(() => {
-    let objectUrl = '';
-    fetch('/anima_optimized.mp4')
-      .then((res) => res.blob())
-      .then((blob) => {
-        objectUrl = URL.createObjectURL(blob);
-        setVideoSrc(objectUrl);
-      })
-      .catch(() => {
-        // Fallback
-        setVideoSrc('/anima_optimized.mp4');
-      });
+    // Pré-carrega todas as imagens para a RAM
+    const images: HTMLImageElement[] = [];
+    for (let i = 0; i < frameCount; i++) {
+      const img = new Image();
+      img.src = currentFrame(i);
+      images.push(img);
+    }
 
-    return () => {
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctxCanvas = canvas.getContext('2d');
+    if (!ctxCanvas) return;
+
+    const render = (index: number) => {
+      const img = images[index];
+      if (img && img.complete && img.naturalWidth > 0) {
+        if (canvas.width !== img.naturalWidth) {
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+        }
+        ctxCanvas.clearRect(0, 0, canvas.width, canvas.height);
+        ctxCanvas.drawImage(img, 0, 0);
+      }
     };
-  }, []);
 
-  useEffect(() => {
-    if (!videoSrc) return;
+    // Renderiza a primeira imagem assim que carregar
+    images[0].onload = () => render(0);
+    // Também tenta renderizar de imediato, caso já esteja no cache do navegador
+    render(0);
 
     const ctx = gsap.context(() => {
-      const video = videoRef.current;
-      if (!video) return;
-
       let frameId: number;
-      const setupScrollTrigger = () => {
-        ScrollTrigger.create({
-          trigger: containerRef.current,
-          start: 'top top',
-          end: '+=150%', // Define a duração do scroll
-          pin: true,
-          pinType: 'fixed',
-          anticipatePin: 1,
-          scrub: true, // scrub: true amarra perfeitamente ao dedo do usuário sem delay
-          onUpdate: (self) => {
-            if (video.duration) {
-              if (frameId) cancelAnimationFrame(frameId);
-              frameId = requestAnimationFrame(() => {
-                // O pequeno acréscimo de +0.001 ajuda a forçar o iOS Safari a renderizar o frame
-                video.currentTime = self.progress * video.duration + 0.001;
-              });
-            }
-          },
-        });
-      };
-
-      if (video.readyState >= 1) {
-        setupScrollTrigger();
-      } else {
-        video.addEventListener('loadedmetadata', setupScrollTrigger);
-      }
-
-      // Hack essencial para iOS Safari: Iniciar a reprodução e pausar para destravar a engine de vídeo
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          video.pause();
-        }).catch(() => {});
-      }
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: 'top top',
+        end: '+=150%',
+        pin: true,
+        pinType: 'fixed',
+        anticipatePin: 1,
+        scrub: true,
+        onUpdate: (self) => {
+          const frameIndex = Math.min(
+            frameCount - 1,
+            Math.max(0, Math.floor(self.progress * frameCount))
+          );
+          if (frameId) cancelAnimationFrame(frameId);
+          frameId = requestAnimationFrame(() => render(frameIndex));
+        },
+      });
     }, containerRef);
 
     return () => {
-      ctx.revert(); // Limpa as instâncias e ScrollTriggers criados evitando memory leaks
+      ctx.revert();
     };
-  }, [videoSrc]);
+  }, []);
 
   return (
     <section ref={containerRef} className="relative min-h-[100dvh] bg-white flex flex-col justify-center overflow-hidden pt-20 pb-12">
@@ -406,17 +396,10 @@ function Hero() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative w-full max-w-xl mx-auto overflow-hidden bg-transparent flex justify-center items-center"
             >
-              {videoSrc && (
-                <video
-                  ref={videoRef}
-                  src={videoSrc}
-                  muted
-                  playsInline
-                  preload="auto"
-                  disablePictureInPicture
-                  className="w-full h-auto object-contain mix-blend-multiply"
-                />
-              )}
+              <canvas
+                ref={canvasRef}
+                className="w-full h-auto object-contain mix-blend-multiply"
+              />
             </motion.div>
           </div>
 
