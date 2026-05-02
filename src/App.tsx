@@ -243,8 +243,31 @@ function Header() {
 function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
+
+  // Pré-carrega o vídeo inteiro na memória RAM (Blob) para evitar engasgos
+  // de rede (network requests) a cada frame do scroll quando em produção (Vercel).
+  useEffect(() => {
+    let objectUrl = '';
+    fetch('/anima_optimized.mp4')
+      .then((res) => res.blob())
+      .then((blob) => {
+        objectUrl = URL.createObjectURL(blob);
+        setVideoSrc(objectUrl);
+      })
+      .catch(() => {
+        // Fallback
+        setVideoSrc('/anima_optimized.mp4');
+      });
+
+    return () => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, []);
 
   useEffect(() => {
+    if (!videoSrc) return;
+
     const ctx = gsap.context(() => {
       const video = videoRef.current;
       if (!video) return;
@@ -289,7 +312,7 @@ function Hero() {
     return () => {
       ctx.revert(); // Limpa as instâncias e ScrollTriggers criados evitando memory leaks
     };
-  }, []);
+  }, [videoSrc]);
 
   return (
     <section ref={containerRef} className="relative min-h-[100dvh] bg-white flex flex-col justify-center overflow-hidden pt-20 pb-12">
@@ -383,15 +406,17 @@ function Hero() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative w-full max-w-xl mx-auto overflow-hidden bg-transparent flex justify-center items-center"
             >
-              <video
-                ref={videoRef}
-                src="/anima_optimized.mp4"
-                muted
-                playsInline
-                preload="auto"
-                disablePictureInPicture
-                className="w-full h-auto object-contain mix-blend-multiply"
-              />
+              {videoSrc && (
+                <video
+                  ref={videoRef}
+                  src={videoSrc}
+                  muted
+                  playsInline
+                  preload="auto"
+                  disablePictureInPicture
+                  className="w-full h-auto object-contain mix-blend-multiply"
+                />
+              )}
             </motion.div>
           </div>
 
