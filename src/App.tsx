@@ -305,7 +305,7 @@ function Hero() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative min-h-[100dvh] bg-white flex flex-col justify-center overflow-hidden pt-20 pb-12">
+    <section ref={containerRef} className="relative min-h-[100dvh] bg-white flex flex-col justify-start lg:justify-center overflow-hidden pt-32 lg:pt-20 pb-20 lg:pb-12">
       <div className="container mx-auto px-4 md:px-6 relative z-10 w-full">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
 
@@ -316,7 +316,7 @@ function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[var(--staticolor-primary)] text-sm font-medium mb-6 mt-4 lg:mt-0">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[var(--staticolor-primary)] text-sm font-medium mb-6 mt-2 lg:mt-0">
                 <CheckCircle2 className="w-4 h-4 text-[var(--staticolor-whatsapp)]" />
                 <span>Atendimento em até 2h</span>
               </div>
