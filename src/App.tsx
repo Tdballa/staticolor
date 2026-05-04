@@ -32,6 +32,7 @@ import img1 from '@/assets/gallery-1.png';
 import img2 from '@/assets/gallery-2.png';
 import img3 from '@/assets/gallery-3.png';
 import img4 from '@/assets/gallery-4.png';
+import { supabase } from '@/lib/supabase';
 
 // ─────────────────────────────────────────────
 // HEADER
@@ -649,23 +650,30 @@ function Services() {
 // GALLERY
 // ─────────────────────────────────────────────
 
-const categories = ['Todos', 'Estruturas Metálicas', 'Móveis', 'Comunicação Visual', 'Indústria'];
-
-const galleryItems = [
-  { id: 1, src: img1, category: 'Estruturas Metálicas', title: 'Portão Residencial' },
-  { id: 2, src: img2, category: 'Indústria', title: 'Suporte Industrial' },
-  { id: 3, src: img3, category: 'Móveis', title: 'Estrutura Cadeira' },
-  { id: 4, src: img4, category: 'Comunicação Visual', title: 'Painel Fachada' },
-  { id: 5, src: img2, category: 'Estruturas Metálicas', title: 'Guarda-corpo' },
-  { id: 6, src: img3, category: 'Indústria', title: 'Carenagem de Máquina' },
-  { id: 7, src: img1, category: 'Móveis', title: 'Base de Mesa' },
-  { id: 8, src: img4, category: 'Comunicação Visual', title: 'Totem Publicitário' },
-];
-
 function Gallery() {
   const [activeCategory, setActiveCategory] = useState('Todos');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [galleryItems, setGalleryItems] = useState<any[]>([]);
+  const [categories, setCategories] = useState<string[]>(['Todos']);
+
+  useEffect(() => {
+    async function fetchGallery() {
+      const { data } = await supabase.from('gallery_cards').select('*').order('id', { ascending: true });
+      if (data) {
+        const items = data.map(d => ({
+          id: d.id,
+          src: d.image_url,
+          category: d.category,
+          title: d.title
+        }));
+        setGalleryItems(items);
+        const uniqueCategories = ['Todos', ...new Set(items.map((i: any) => i.category))];
+        setCategories(uniqueCategories as string[]);
+      }
+    }
+    fetchGallery();
+  }, []);
 
   const filteredItems = activeCategory === 'Todos'
     ? galleryItems
