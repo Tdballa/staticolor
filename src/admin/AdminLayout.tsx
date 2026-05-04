@@ -77,7 +77,7 @@ export function AdminLayout() {
                 id="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Ex: savio"
+                placeholder="Ex: admin"
                 required
               />
             </div>
