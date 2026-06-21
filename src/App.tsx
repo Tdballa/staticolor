@@ -193,42 +193,44 @@ function Header() {
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="lg:hidden bg-white border-t border-gray-100 overflow-hidden"
           >
-            <ul className="flex flex-col px-4 py-6 gap-1">
-              {navLinks.map((link, i) => (
+            <div className="max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain">
+              <ul className="flex flex-col px-4 py-6 gap-1">
+                {navLinks.map((link, i) => (
+                  <motion.li
+                    key={link.name}
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.05 + i * 0.04, duration: 0.3 }}
+                  >
+                    <a
+                      href={`#${link.id}`}
+                      onClick={(e) => handleNavClick(e, link.id)}
+                      className={`block text-lg font-medium px-3 py-3 rounded-md transition-colors ${activeSection === link.id
+                        ? 'text-[var(--staticolor-accent)] bg-blue-50'
+                        : 'text-[var(--staticolor-gray-600)] hover:bg-gray-50 hover:text-[var(--staticolor-primary)]'
+                        }`}
+                    >
+                      {link.name}
+                    </a>
+                  </motion.li>
+                ))}
                 <motion.li
-                  key={link.name}
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.05 + i * 0.04, duration: 0.3 }}
+                  transition={{ delay: 0.05 + navLinks.length * 0.04, duration: 0.3 }}
+                  className="pt-4 border-t border-gray-100 mt-2"
                 >
-                  <a
-                    href={`#${link.id}`}
-                    onClick={(e) => handleNavClick(e, link.id)}
-                    className={`block text-lg font-medium px-3 py-3 rounded-md transition-colors ${activeSection === link.id
-                      ? 'text-[var(--staticolor-accent)] bg-blue-50'
-                      : 'text-[var(--staticolor-gray-600)] hover:bg-gray-50 hover:text-[var(--staticolor-primary)]'
-                      }`}
+                  <Button
+                    asChild
+                    className="w-full bg-[var(--staticolor-accent)] hover:bg-blue-700 text-white"
                   >
-                    {link.name}
-                  </a>
+                    <a href="#contato" onClick={(e) => handleNavClick(e, 'contato')}>
+                      Solicitar Orçamento
+                    </a>
+                  </Button>
                 </motion.li>
-              ))}
-              <motion.li
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 + navLinks.length * 0.04, duration: 0.3 }}
-                className="pt-4 border-t border-gray-100 mt-2"
-              >
-                <Button
-                  asChild
-                  className="w-full bg-[var(--staticolor-accent)] hover:bg-blue-700 text-white"
-                >
-                  <a href="#contato" onClick={(e) => handleNavClick(e, 'contato')}>
-                    Solicitar Orçamento
-                  </a>
-                </Button>
-              </motion.li>
-            </ul>
+              </ul>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -280,23 +282,24 @@ function Hero() {
 
     const ctx = gsap.context(() => {
       let frameId: number;
+
+      const updateFrame = (self: ScrollTrigger) => {
+        const frameIndex = Math.min(
+          frameCount - 1,
+          Math.max(0, Math.floor(self.progress * frameCount))
+        );
+        if (frameId) cancelAnimationFrame(frameId);
+        frameId = requestAnimationFrame(() => render(frameIndex));
+      };
+
       ScrollTrigger.create({
         trigger: containerRef.current,
-        start: 'top top',
-        end: '+=150%',
-        pin: true,
-        pinType: 'fixed',
-        anticipatePin: 1,
+        start: 'top 80px',
+        end: 'bottom center',
         scrub: true,
-        onUpdate: (self) => {
-          const frameIndex = Math.min(
-            frameCount - 1,
-            Math.max(0, Math.floor(self.progress * frameCount))
-          );
-          if (frameId) cancelAnimationFrame(frameId);
-          frameId = requestAnimationFrame(() => render(frameIndex));
-        },
+        onUpdate: updateFrame,
       });
+
     }, containerRef);
 
     return () => {
@@ -305,7 +308,7 @@ function Hero() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative min-h-[100dvh] bg-white flex flex-col justify-start lg:justify-center overflow-hidden pt-32 lg:pt-20 pb-20 lg:pb-12">
+    <section ref={containerRef} className="relative min-h-0 lg:min-h-[100dvh] bg-white flex flex-col justify-start lg:justify-center overflow-hidden pt-28 lg:pt-20 pb-12 lg:pb-12">
       <div className="container mx-auto px-4 md:px-6 relative z-10 w-full">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
 
@@ -405,23 +408,6 @@ function Hero() {
 
         </div>
       </div>
-
-      <motion.a
-        href="#sobre"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 1 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[var(--staticolor-gray-400)] hover:text-[var(--staticolor-primary)] transition-colors z-20"
-        aria-label="Rolar para conhecer mais"
-      >
-        <span className="text-[10px] uppercase tracking-[0.3em] font-semibold">Role o vídeo</span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-        >
-          <ChevronDown className="w-5 h-5" />
-        </motion.div>
-      </motion.a>
     </section>
   );
 }
