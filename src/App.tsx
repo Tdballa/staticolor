@@ -32,7 +32,6 @@ import img1 from '@/assets/gallery-1.png';
 import img2 from '@/assets/gallery-2.png';
 import img3 from '@/assets/gallery-3.png';
 import img4 from '@/assets/gallery-4.png';
-import { supabase } from '@/lib/supabase';
 
 // ─────────────────────────────────────────────
 // HEADER
@@ -306,7 +305,7 @@ function Hero() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative min-h-[100dvh] bg-white flex flex-col justify-center overflow-hidden pt-20 pb-12">
+    <section ref={containerRef} className="relative min-h-[100dvh] bg-white flex flex-col justify-start lg:justify-center overflow-hidden pt-32 lg:pt-20 pb-20 lg:pb-12">
       <div className="container mx-auto px-4 md:px-6 relative z-10 w-full">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 w-full">
 
@@ -317,7 +316,7 @@ function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[var(--staticolor-primary)] text-sm font-medium mb-6 mt-4 lg:mt-0">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[var(--staticolor-primary)] text-sm font-medium mb-6 mt-2 lg:mt-0">
                 <CheckCircle2 className="w-4 h-4 text-[var(--staticolor-whatsapp)]" />
                 <span>Atendimento em até 2h</span>
               </div>
@@ -650,30 +649,23 @@ function Services() {
 // GALLERY
 // ─────────────────────────────────────────────
 
+const categories = ['Todos', 'Estruturas Metálicas', 'Móveis', 'Comunicação Visual', 'Indústria'];
+
+const galleryItems = [
+  { id: 1, src: img1, category: 'Estruturas Metálicas', title: 'Portão Residencial' },
+  { id: 2, src: img2, category: 'Indústria', title: 'Suporte Industrial' },
+  { id: 3, src: img3, category: 'Móveis', title: 'Estrutura Cadeira' },
+  { id: 4, src: img4, category: 'Comunicação Visual', title: 'Painel Fachada' },
+  { id: 5, src: img2, category: 'Estruturas Metálicas', title: 'Guarda-corpo' },
+  { id: 6, src: img3, category: 'Indústria', title: 'Carenagem de Máquina' },
+  { id: 7, src: img1, category: 'Móveis', title: 'Base de Mesa' },
+  { id: 8, src: img4, category: 'Comunicação Visual', title: 'Totem Publicitário' },
+];
+
 function Gallery() {
   const [activeCategory, setActiveCategory] = useState('Todos');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [galleryItems, setGalleryItems] = useState<any[]>([]);
-  const [categories, setCategories] = useState<string[]>(['Todos']);
-
-  useEffect(() => {
-    async function fetchGallery() {
-      const { data } = await supabase.from('gallery_cards').select('*').order('id', { ascending: true });
-      if (data) {
-        const items = data.map(d => ({
-          id: d.id,
-          src: d.image_url,
-          category: d.category,
-          title: d.title
-        }));
-        setGalleryItems(items);
-        const uniqueCategories = ['Todos', ...new Set(items.map((i: any) => i.category))];
-        setCategories(uniqueCategories as string[]);
-      }
-    }
-    fetchGallery();
-  }, []);
 
   const filteredItems = activeCategory === 'Todos'
     ? galleryItems
