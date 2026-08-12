@@ -42,6 +42,7 @@ const navLinks = [
   { name: 'Diferenciais', id: 'diferenciais' },
   { name: 'Depoimentos', id: 'depoimentos' },
   { name: 'FAQ', id: 'faq' },
+  { name: 'Catálogo de Cores', id: 'faq' },
   { name: 'Contato', id: 'contato' },
 ];
 
@@ -1085,6 +1086,23 @@ const faqs = [
       </>
     ),
   },
+  {
+    question: 'BOLETIM TÉCNICO KUALIPHOS 605 B',
+    answer: (
+      <>
+        O boletim técnico do KUALIPHOS 605 B pode ser acessado pelo link a seguir:{' '}
+        <a
+          href="/boletimkualiphos.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[var(--staticolor-accent)] font-semibold hover:underline"
+        >
+          CLIQUE AQUI
+        </a>
+      </>
+    ),
+  },
+
 ];
 
 function Faq() {
