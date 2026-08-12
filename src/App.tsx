@@ -614,7 +614,7 @@ function Services() {
               <h3 className="text-xl font-display font-bold mb-3">{service.title}</h3>
               <p className="text-blue-100/70 text-sm leading-relaxed mb-6 flex-grow">{service.description}</p>
               <a
-                href={`#contato?servico=${encodeURIComponent(service.title)}`}
+                href={`#contato`}
                 className="text-sm font-medium text-[var(--staticolor-accent)] hover:text-white inline-flex items-center gap-1 transition-colors mt-auto group-hover:underline"
               >
                 Solicitar orçamento <ArrowRight size={14} />
@@ -1380,8 +1380,8 @@ function Footer() {
             </p>
             <div className="flex gap-4">
               <a href="https://www.instagram.com/staticolorpintura/" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--staticolor-accent)] transition-colors" aria-label="Instagram"><Instagram size={20} /></a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--staticolor-accent)] transition-colors" aria-label="Facebook"><Facebook size={20} /></a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--staticolor-accent)] transition-colors" aria-label="LinkedIn"><Linkedin size={20} /></a>
+              {/* <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--staticolor-accent)] transition-colors" aria-label="Facebook"><Facebook size={20} /></a> */}
+              <a href="https://br.linkedin.com/company/staticolor-pint-eletro" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--staticolor-accent)] transition-colors" aria-label="LinkedIn"><Linkedin size={20} /></a>
             </div>
           </div>
 
