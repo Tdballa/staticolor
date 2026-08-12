@@ -28,11 +28,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 
-import img1 from '@/assets/gallery-1.png';
-import img2 from '@/assets/gallery-2.png';
-import img3 from '@/assets/gallery-3.png';
-import img4 from '@/assets/gallery-4.png';
-
 // ─────────────────────────────────────────────
 // HEADER
 // ─────────────────────────────────────────────
@@ -635,17 +630,59 @@ function Services() {
 // GALLERY
 // ─────────────────────────────────────────────
 
-const categories = ['Todos', 'Estruturas Metálicas', 'Móveis', 'Comunicação Visual', 'Indústria'];
+// Mapeamento automático para imagens da pasta src/assets
+const assetImages = import.meta.glob('/src/assets/*.{png,jpg,jpeg,webp,svg,PNG,JPG,JPEG,WEBP,SVG}', { eager: true, import: 'default' }) as Record<string, string>;
 
+function resolveGalleryImage(src: string): string {
+  if (!src) return '';
+  if (typeof src !== 'string') return src;
+
+  if (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:') || src.startsWith('blob:')) {
+    return src;
+  }
+
+  if (src.startsWith('/') && !src.startsWith('/src/')) {
+    return src;
+  }
+
+  let normalized = src;
+  if (normalized.startsWith('@/assets/')) {
+    normalized = normalized.replace('@/assets/', '/src/assets/');
+  } else if (normalized.startsWith('assets/')) {
+    normalized = '/src/' + normalized;
+  } else if (!normalized.startsWith('/src/assets/')) {
+    normalized = '/src/assets/' + normalized.replace(/^\//, '');
+  }
+
+  return assetImages[normalized] || src;
+}
+
+const categories = ['Todos', /*'Estruturas Metálicas', 'Móveis', 'Comunicação Visual', 'Indústria',*/ 'Nossa Estrutura'];
+
+/* 
+  📌 GALERIA DE FOTOS - COMO ALTERAR OU ADICIONAR NOVAS FOTOS:
+  Basta mudar a propriedade 'src' dos itens abaixo para a foto desejada.
+  Formatos aceitos diretamente:
+  - Nome do arquivo em src/assets: 'gallery-1.webp' ou 'ft1.webp'
+  - Caminho relativo ou alias: '@/assets/ft1.webp' ou '/src/assets/ft1.webp'
+  - Foto na pasta public: '/logo_azul.webp'
+  - Link de imagem da web: 'https://exemplo.com/imagem.jpg'
+*/
 const galleryItems = [
-  { id: 1, src: img1, category: 'Estruturas Metálicas', title: 'Portão Residencial' },
-  { id: 2, src: img2, category: 'Indústria', title: 'Suporte Industrial' },
-  { id: 3, src: img3, category: 'Móveis', title: 'Estrutura Cadeira' },
-  { id: 4, src: img4, category: 'Comunicação Visual', title: 'Painel Fachada' },
-  { id: 5, src: img2, category: 'Estruturas Metálicas', title: 'Guarda-corpo' },
-  { id: 6, src: img3, category: 'Indústria', title: 'Carenagem de Máquina' },
-  { id: 7, src: img1, category: 'Móveis', title: 'Base de Mesa' },
-  { id: 8, src: img4, category: 'Comunicação Visual', title: 'Totem Publicitário' },
+  { id: 1, src: 'src/assets/ft33.webp', category: 'Estruturas Metálicas', title: ' ' },
+  { id: 2, src: 'src/assets/ft5.webp', category: 'Indústria', title: ' ' },
+  { id: 3, src: 'src/assets/ft6.webp', category: 'Móveis', title: ' ' },
+  { id: 4, src: 'src/assets/ft23.webp', category: 'Comunicação Visual', title: ' ' },
+  { id: 5, src: 'src/assets/ft16.webp', category: 'Estruturas Metálicas', title: ' ' },
+  { id: 6, src: 'src/assets/ft28.webp', category: 'Indústria', title: ' ' },
+  { id: 7, src: 'src/assets/ft12.webp', category: 'Móveis', title: ' ' },
+  { id: 8, src: 'src/assets/ft21.webp', category: 'Comunicação Visual', title: ' ' },
+  { id: 9, src: 'src/assets/ft1.webp', category: 'Nossa Estrutura', title: ' ' },
+  { id: 10, src: 'src/assets/ft2.webp', category: 'Nossa Estrutura', title: '' },
+  { id: 11, src: 'src/assets/ft10.webp', category: 'Nossa Estrutura', title: ' ' },
+  { id: 12, src: 'src/assets/ft11.webp', category: 'Nossa Estrutura', title: ' ' },
+  { id: 13, src: 'src/assets/ft22.webp', category: 'Nossa Estrutura', title: ' ' },
+  { id: 14, src: 'src/assets/ft18.webp', category: 'Nossa Estrutura', title: ' ' },
 ];
 
 function Gallery() {
@@ -722,7 +759,7 @@ function Gallery() {
                 onClick={() => openLightbox(index)}
               >
                 <img
-                  src={item.src}
+                  src={resolveGalleryImage(item.src)}
                   alt={item.title}
                   loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -753,7 +790,7 @@ function Gallery() {
             </button>
             <div className="relative w-full max-w-4xl px-12 aspect-[4/3] sm:aspect-auto sm:h-[80vh] flex items-center justify-center">
               <img
-                src={filteredItems[currentIndex].src}
+                src={resolveGalleryImage(filteredItems[currentIndex].src)}
                 alt={filteredItems[currentIndex].title}
                 className="max-w-full max-h-full object-contain rounded"
               />
@@ -1017,6 +1054,22 @@ const faqs = [
   { question: 'Vocês atendem fora de Uberlândia?', answer: 'Sim, atendemos toda a região do Triângulo Mineiro. Entre em contato para verificar a logística.' },
   { question: 'Como funciona o orçamento?', answer: 'O orçamento é personalizado e gratuito. Preencha nosso formulário ou fale diretamente pelo WhatsApp com informações sobre suas peças, quantidade e cor desejada.' },
   { question: 'Vocês emitem Nota Fiscal?', answer: 'Sim, todos os nossos serviços são acompanhados de emissão de nota fiscal.' },
+  {
+    question: 'Qual catálogo de cores?',
+    answer: (
+      <>
+        As paletas de cores que utilizamos podem ser acessadas pelo link a seguir:{' '}
+        <a
+          href="src/assets/catalogocores.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[var(--staticolor-accent)] font-semibold hover:underline"
+        >
+          CLIQUE AQUI
+        </a>
+      </>
+    ),
+  },
 ];
 
 function Faq() {
