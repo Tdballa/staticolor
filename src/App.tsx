@@ -668,21 +668,36 @@ const categories = ['Todos', /*'Estruturas Metálicas', 'Móveis', 'Comunicaçã
   - Foto na pasta public: '/logo_azul.webp'
   - Link de imagem da web: 'https://exemplo.com/imagem.jpg'
 */
+import ft1 from './assets/ft1.webp';
+import ft2 from './assets/ft2.webp';
+import ft5 from './assets/ft5.webp';
+import ft6 from './assets/ft6.webp';
+import ft10 from './assets/ft10.webp';
+import ft11 from './assets/ft11.webp';
+import ft12 from './assets/ft12.webp';
+import ft16 from './assets/ft16.webp';
+import ft18 from './assets/ft18.webp';
+import ft21 from './assets/ft21.webp';
+import ft22 from './assets/ft22.webp';
+import ft23 from './assets/ft23.webp';
+import ft28 from './assets/ft28.webp';
+import ft33 from './assets/ft33.webp';
+
 const galleryItems = [
-  { id: 1, src: 'src/assets/ft33.webp', category: 'Estruturas Metálicas', title: ' ' },
-  { id: 2, src: 'src/assets/ft5.webp', category: 'Indústria', title: ' ' },
-  { id: 3, src: 'src/assets/ft6.webp', category: 'Móveis', title: ' ' },
-  { id: 4, src: 'src/assets/ft23.webp', category: 'Comunicação Visual', title: ' ' },
-  { id: 5, src: 'src/assets/ft16.webp', category: 'Estruturas Metálicas', title: ' ' },
-  { id: 6, src: 'src/assets/ft28.webp', category: 'Indústria', title: ' ' },
-  { id: 7, src: 'src/assets/ft12.webp', category: 'Móveis', title: ' ' },
-  { id: 8, src: 'src/assets/ft21.webp', category: 'Comunicação Visual', title: ' ' },
-  { id: 9, src: 'src/assets/ft1.webp', category: 'Nossa Estrutura', title: ' ' },
-  { id: 10, src: 'src/assets/ft2.webp', category: 'Nossa Estrutura', title: '' },
-  { id: 11, src: 'src/assets/ft10.webp', category: 'Nossa Estrutura', title: ' ' },
-  { id: 12, src: 'src/assets/ft11.webp', category: 'Nossa Estrutura', title: ' ' },
-  { id: 13, src: 'src/assets/ft22.webp', category: 'Nossa Estrutura', title: ' ' },
-  { id: 14, src: 'src/assets/ft18.webp', category: 'Nossa Estrutura', title: ' ' },
+  { id: 1, src: ft33, category: 'Estruturas Metálicas', title: '' },
+  { id: 2, src: ft5, category: 'Indústria', title: '' },
+  { id: 3, src: ft6, category: 'Móveis', title: '' },
+  { id: 4, src: ft23, category: 'Comunicação Visual', title: '' },
+  { id: 5, src: ft16, category: 'Estruturas Metálicas', title: '' },
+  { id: 6, src: ft28, category: 'Indústria', title: '' },
+  { id: 7, src: ft12, category: 'Móveis', title: '' },
+  { id: 8, src: ft21, category: 'Comunicação Visual', title: '' },
+  { id: 9, src: ft1, category: 'Nossa Estrutura', title: '' },
+  { id: 10, src: ft2, category: 'Nossa Estrutura', title: '' },
+  { id: 11, src: ft10, category: 'Nossa Estrutura', title: '' },
+  { id: 12, src: ft11, category: 'Nossa Estrutura', title: '' },
+  { id: 13, src: ft22, category: 'Nossa Estrutura', title: '' },
+  { id: 14, src: ft18, category: 'Nossa Estrutura', title: '' },
 ];
 
 function Gallery() {
