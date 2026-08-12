@@ -1075,7 +1075,7 @@ const faqs = [
       <>
         As paletas de cores que utilizamos podem ser acessadas pelo link a seguir:{' '}
         <a
-          href="src/assets/catalogocores.pdf"
+          href="/catalogocores.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="text-[var(--staticolor-accent)] font-semibold hover:underline"
