@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# AI Crawlers / Generative Engine Optimization (GEO & AI Search)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+Sitemap: https://staticolorpintura.com.br/sitemap.xml

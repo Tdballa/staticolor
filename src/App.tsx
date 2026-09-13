@@ -690,20 +690,20 @@ import ft28 from './assets/ft28.webp';
 import ft33 from './assets/ft33.webp';
 
 const galleryItems = [
-  { id: 1, src: ft33, category: 'Estruturas Metálicas', title: '' },
-  { id: 2, src: ft5, category: 'Indústria', title: '' },
-  { id: 3, src: ft6, category: 'Móveis', title: '' },
-  { id: 4, src: ft23, category: 'Comunicação Visual', title: '' },
-  { id: 5, src: ft16, category: 'Estruturas Metálicas', title: '' },
-  { id: 6, src: ft28, category: 'Indústria', title: '' },
-  { id: 7, src: ft12, category: 'Móveis', title: '' },
-  { id: 8, src: ft21, category: 'Comunicação Visual', title: '' },
-  { id: 9, src: ft1, category: 'Nossa Estrutura', title: '' },
-  { id: 10, src: ft2, category: 'Nossa Estrutura', title: '' },
-  { id: 11, src: ft10, category: 'Nossa Estrutura', title: '' },
-  { id: 12, src: ft11, category: 'Nossa Estrutura', title: '' },
-  { id: 13, src: ft22, category: 'Nossa Estrutura', title: '' },
-  { id: 14, src: ft18, category: 'Nossa Estrutura', title: '' },
+  { id: 1, src: ft33, category: 'Estruturas Metálicas', title: 'Pintura Eletrostática em Estrutura Metálica Industrial' },
+  { id: 2, src: ft5, category: 'Indústria', title: 'Pintura a Pó de Peças Industriais em Lote' },
+  { id: 3, src: ft6, category: 'Móveis', title: 'Pintura Eletrostática em Móveis Metálicos' },
+  { id: 4, src: ft23, category: 'Comunicação Visual', title: 'Pintura Eletrostática para Totens e Painéis' },
+  { id: 5, src: ft16, category: 'Estruturas Metálicas', title: 'Acabamento Premium em Peças de Serralheria' },
+  { id: 6, src: ft28, category: 'Indústria', title: 'Tratamento Anticorrosivo em Componentes Metálicos' },
+  { id: 7, src: ft12, category: 'Móveis', title: 'Pintura a Pó em Cadeiras e Estruturas Metálicas' },
+  { id: 8, src: ft21, category: 'Comunicação Visual', title: 'Estrutura em Pintura Eletrostática de Alta Durabilidade' },
+  { id: 9, src: ft1, category: 'Nossa Estrutura', title: 'Estufa de Pintura Eletrostática de 6 Metros' },
+  { id: 10, src: ft2, category: 'Nossa Estrutura', title: 'Tanque 6.000L para Tratamento Químico Kualipthos 605B' },
+  { id: 11, src: ft10, category: 'Nossa Estrutura', title: 'Cabine de Pintura Eletrostática a Pó' },
+  { id: 12, src: ft11, category: 'Nossa Estrutura', title: 'Processo de Decapagem e Fosfatização por Imersão' },
+  { id: 13, src: ft22, category: 'Nossa Estrutura', title: 'Área de Aplicação e Armazenamento Otimizado' },
+  { id: 14, src: ft18, category: 'Nossa Estrutura', title: 'Equipamentos Industriais de Pintura Eletrostática' },
 ];
 
 function Gallery() {
