@@ -262,7 +262,7 @@ function Hero() {
     const render = (index: number) => {
       const img = images[index];
       if (img && img.complete && img.naturalWidth > 0) {
-        if (canvas.width !== img.naturalWidth) {
+        if (canvas.width !== img.naturalWidth && img.naturalWidth > 0) {
           canvas.width = img.naturalWidth;
           canvas.height = img.naturalHeight;
         }
@@ -272,7 +272,10 @@ function Hero() {
     };
 
     // Renderiza a primeira imagem assim que carregar
-    images[0].onload = () => render(0);
+    images[0].onload = () => {
+      render(0);
+      ScrollTrigger.refresh();
+    };
     // Também tenta renderizar de imediato, caso já esteja no cache do navegador
     render(0);
 
@@ -291,7 +294,7 @@ function Hero() {
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: 'top 80px',
-        end: 'bottom center',
+        end: 'bottom 80px',
         scrub: true,
         onUpdate: updateFrame,
       });
@@ -397,6 +400,8 @@ function Hero() {
             >
               <canvas
                 ref={canvasRef}
+                width={1752}
+                height={1180}
                 className="w-full h-auto object-contain mix-blend-multiply"
               />
             </motion.div>
